@@ -1,30 +1,27 @@
-<!-- home.html -->
+{% extends 'layouts/base.html' %}
 
-{% extends "layouts/base.html" %}
+
 
 {% block content %}
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Pourcentage des tâches réalisées par intervenant</h4>
-                    </div>
-                    <div class="card-body">
-                        {{ intervenant_chart }}
-                    </div>
-                </div>
+    <h1>Statistiques</h1>
+
+    <a href="#" >Telecharger</a>
+
+    <div class="statistics">
+        <div class="row mt-6">
+            <!-- Pourcentage des tâches réalisées par chaque intervenant -->
+            <div class="col-md-6" id="intervenant-chart">
+                {{ intervenant_chart|safe }}
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Pourcentage des tâches réalisées et en attente</h4>
-                    </div>
-                    <div class="card-body">
-                        {{ taches_chart }}
-                    </div>
-                </div>
+            <!-- Affichage du pie chart -->
+            <div class="col-md-6" id="taches-chart">
+                {{ taches_chart|safe }}
             </div>
         </div>
     </div>
+
+   
+
 {% endblock %}
+
+

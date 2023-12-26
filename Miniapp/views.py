@@ -1,7 +1,18 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from .models import *
 from .forms import*
-
+from django.db.models import Count
+from django.http import HttpResponse
+import matplotlib.pyplot as plt
+import mpld3
+from io import BytesIO
+import base64
+import plotly.express as px
+import plotly.io as pio
+from io import BytesIO
+from markupsafe import Markup 
+import plotly.graph_objs as go
+import os
 # Create your views here.
 
 def Login(request):
@@ -16,7 +27,7 @@ def Login(request):
             return render(request, 'forms/loginForm.html', {'error_message': 'Invalid username or password'})
 
         # Authentication successful, redirect to the home page
-        return redirect('home')
+        return redirect('statistics')
 
     return render(request, 'forms/loginForm.html')
 
@@ -141,9 +152,9 @@ def intervention_delete(request, id_intervention):
     intervention.delete()
     return redirect('intervention_list')
 
-def home(request):
+# def home(request):
 
-    return render(request,'home.html')
+#     return render(request,'home.html')
 
 
 def get_intervenant_percentage_data():
@@ -152,8 +163,8 @@ def get_intervenant_percentage_data():
     data = {}
 
     for intervenant in intervenants:
-        total_tasks = Intervention.objects.filter(intervenant=intervenant).count()
-        completed_tasks = Intervention.objects.filter(intervenant=intervenant, etat='réalisée').count()
+        total_tasks = Intervention.objects.filter(id_intervenant=intervenant).count()
+        completed_tasks = Intervention.objects.filter(id_intervenant=intervenant, etat='réalisée').count()
 
         if total_tasks > 0:
             percentage_completed = (completed_tasks / total_tasks) * 100
@@ -182,40 +193,7 @@ def taches_realise_en_attente():
 
     return pie_chart_data
 
-def pdfconversion(request):
-    interventions = Intervention.objects.all()
 
-    # Calculer le pourcentage des tâches réalisées ou en attente
-    total_tasks = interventions.count()
-    completed_tasks = interventions.filter(etat='réalisée').count()
-    pending_tasks = interventions.filter(etat='en attente').count()
-
-    percentage_completed = (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
-    percentage_pending = (pending_tasks / total_tasks) * 100 if total_tasks > 0 else 0
-
-    # Données pour le pie chart
-    pie_chart_data = {
-        'Réalisées': percentage_completed,
-        'En attente': percentage_pending
-    }
-
-    # Créer le graphique
-    fig = px.pie(
-        names=pie_chart_data.keys(),
-        values=pie_chart_data.values(),
-        title='Répartition des tâches',
-        hole=0.3
-    )
-
-    # Convertir le graphique en format PDF
-    pdf_bytes = pio.to_image(fig, format='pdf')
-
-    pdf_file_path = 'static/pie_chart.pdf'
-
-    # Vérifier si le fichier PDF existe déjà
-  
-    with open(pdf_file_path, 'wb') as f:
-        f.write(pdf_bytes)
     
 def generate_pie_chart(data, title):
     labels = list(data.keys())

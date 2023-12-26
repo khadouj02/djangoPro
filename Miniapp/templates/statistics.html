@@ -1,0 +1,78 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block title %}Statistics{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Include html2canvas and jsPDF libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+
+    <h1>Statistics Page</h1>
+   
+    <a href="#" onclick="downloadPDF()">Telecharger</a>s
+    <!-- Graphique en secteurs pour les tâches réalisées par chaque intervenant -->
+    <div>
+        <h2>Percentage of Tasks Completed by Each Intervenant</h2>
+        <img src="data:image/png;base64,{{ intervenant_chart }}"
+            alt="Tasks Completed by Each Intervenant">
+    </div>
+
+    <!-- Pourcentage des tâches réalisées -->
+    <div>
+        <h2>Percentage of Tasks Completed</h2>
+        <p id="intervenant-chart">{{ percentage_completed }}% Completed</p>
+    </div>
+
+    <!-- Pourcentage des tâches en attente -->
+    <div>
+        <h2>Percentage of Pending Tasks</h2>
+        <p id="taches-chart">{{ percentage_pending }}% Pending</p>
+    </div>
+    <div>
+      
+    </div>
+    <!-- Ajoutez d'autres éléments HTML si nécessaire -->
+
+
+    <script>
+        function downloadPDF() {
+            // Get the elements to capture as images
+            const intervChartElement = document.getElementById('intervenant-chart');
+            const tachesChartElement = document.getElementById('taches-chart');
+    
+            // Use html2canvas to capture the content as images
+            html2canvas(intervChartElement).then(function (canvas1) {
+                html2canvas(tachesChartElement).then(function (canvas2) {
+                    // Create a new jsPDF instance
+                    const pdf = new jsPDF();
+    
+                    // Add the captured images to the PDF
+                    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 10, 10, 90, 75);
+                    pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 110, 10, 90, 75);
+    
+                    // Save the PDF or open it in a new tab
+                    const pdfData = pdf.output();
+                    const blob = new Blob([pdfData], { type: 'application/pdf' });
+                    const url = URL.createObjectURL(blob);
+    
+                    // Create a temporary anchor element and trigger a click event
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'statistics.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+    
+                    // Remove the temporary anchor element
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            });
+        }
+    </script>
+{% endblock %}

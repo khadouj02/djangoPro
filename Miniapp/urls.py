@@ -10,7 +10,6 @@ from .views import intervention_list, intervention_create, intervention_edit, in
 urlpatterns =[
     path('',views.Login,name='login'),
     path('SingIn',views.SingIn,name='signin'),
-    path('home',views.home,name='home'),
     path('intervenants/', intervenant_list, name='intervenant_list'),
     path('intervenants/new/', intervenant_create, name='intervenant_create'),
     path('intervenants/<int:id_intervenant>/edit/', intervenant_edit, name='intervenant_edit'),
@@ -24,6 +23,8 @@ urlpatterns =[
     path('interventions/<int:id_intervention>/edit/', intervention_edit, name='intervention_edit'),
     path('interventions/<int:id_intervention>/delete/', intervention_delete, name='intervention_delete'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('statistics/', views.statistics, name='statistics'),
+
 ]
 
 
