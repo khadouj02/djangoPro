@@ -1,0 +1,38 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Liste des Interventions</h2>
+    <a href="{% url 'intervention_create' %}" class="btn btn-primary mb-3">Ajouter une intervention</a>
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Type</th>
+          <th scope="col">Motive</th>
+          <th scope="col">État</th>
+          <th scope="col">Intervenant</th>
+          <th scope="col">Client</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for intervention in interventions %}
+          <tr>
+            <td>{{ intervention.date }}</td> 
+            <td>{{ intervention.type }}</td>
+            <td>{{ intervention.motive }}</td>
+            <td>{{ intervention.etat }}</td>
+            <td>{{ intervention.id_intervenant.nom }}</td>
+            <td>{{ intervention.id_client.nom }}</td>
+            <td>
+              <a href="{% url 'intervention_delete' intervention.idintervention %}" class="btn btn-danger btn-sm">Supprimer</a>
+              <a href="{% url 'intervention_edit' intervention.idintervention %}" class="btn btn-warning btn-sm">Modifier</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

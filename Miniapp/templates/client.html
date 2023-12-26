@@ -1,0 +1,32 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Liste des Clients</h2>
+    <a href="{% url 'client_create' %}" class="btn btn-primary mb-3">Ajouter un client</a>
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Prénom</th>
+          <th scope="col">Direction</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for client in clients %}
+          <tr>
+            <td>{{ client.nom }}</td> 
+            <td>{{ client.prenom }}</td>
+            <td>{{ client.direction }}</td>
+            <td>
+              <a href="{% url 'client_delete' client.idclient %}" class="btn btn-danger btn-sm">Supprimer</a>
+              <a href="{% url 'client_edit' client.idclient %}" class="btn btn-warning btn-sm">Modifier</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

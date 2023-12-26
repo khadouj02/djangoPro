@@ -1,0 +1,12 @@
+<!-- client_form.html -->
+
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+  <h2>Ajouter/Modifier un client</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+  </form>
+{% endblock %}

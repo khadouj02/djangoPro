@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Liste des Intervenants</h2>
+    <a href="{% url 'intervenant_create' %}" class="btn btn-primary mb-3">Ajouter un intervenant</a>
+
+    <table class="table">
+      <thead class="thead-dark">
+        
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Prenom</th>
+          <th scope="col">Post</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for intervenant in intervenants %}
+          <tr>
+            <td>{{ intervenant.nom }}</td> 
+            <td>{{ intervenant.prenom }}</td>
+            <td>{{ intervenant.post }}</td>
+            <td>
+              <a href="{% url 'intervenant_delete' intervenant.idInter %}" class="btn btn-danger btn-sm">Supprimer</a>
+              <a href="{% url 'intervenant_edit' intervenant.idInter %}" class="btn btn-warning btn-sm">Modifier</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

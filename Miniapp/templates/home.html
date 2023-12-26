@@ -1,0 +1,30 @@
+<!-- home.html -->
+
+{% extends "layouts/base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Pourcentage des tâches réalisées par intervenant</h4>
+                    </div>
+                    <div class="card-body">
+                        {{ intervenant_chart }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Pourcentage des tâches réalisées et en attente</h4>
+                    </div>
+                    <div class="card-body">
+                        {{ taches_chart }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
