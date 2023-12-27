@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Statistiques</h1>
 
-    <a href="#" >Telecharger</a>
+    <button id='bu' class='btn btn-outline-primary'>Telecharger le pdf</button>
 
     <div class="statistics">
         <div class="row mt-6">
@@ -19,8 +19,23 @@
             </div>
         </div>
     </div>
-
-   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('bu').addEventListener('click', function() {
+                // Get the elements to capture as images
+                html2canvas(document.querySelector('.statistics')).then(function(canvas) {
+                    let base64image = canvas.toDataURL('image/png');
+                    
+                    let pdf = new jsPDF('p', 'pt', [1600, 1131]);
+                    pdf.addImage(base64image, 'PNG', 15, 15, 960, 400);
+                    pdf.save('char.pdf');
+                });
+            });
+        });
+    </script>
 
 {% endblock %}
 
